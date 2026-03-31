@@ -9,7 +9,11 @@ def index():
 @app.route('/check_condition', methods=['POST'])
 def check_condition():
     data = request.get_json()
-    symptoms = int(data.get('symptoms', 0))
+
+    try:
+        symptoms = int(data.get('symptoms', 0))
+    except:
+        return jsonify({'result': 'Invalid input'}), 400
 
     if symptoms >= 8:
         result = "Critical Condition – Send patient to ICU immediately"
@@ -23,4 +27,4 @@ def check_condition():
     return jsonify({'result': result})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
